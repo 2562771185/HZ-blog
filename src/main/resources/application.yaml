@@ -1,0 +1,32 @@
+server:
+  port: 8888
+spring:
+  application:
+    name: jhzzBlog
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/blog
+    username: root
+    password: 123456mjz...
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    host: localhost
+    port: 6379
+  servlet:
+    multipart:
+      # 单个文件的最大值
+      max-file-size: 2MB
+      # 上传文件总的最大值
+      max-request-size: 20MB
+mybatis-plus:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+#      数据库前缀
+      table-prefix: ms_
+#      rocketmq配置
+#rocketmq:
+#  name-server: 0.0.0.0:9876
+#  producer:
+#    group: blog_group

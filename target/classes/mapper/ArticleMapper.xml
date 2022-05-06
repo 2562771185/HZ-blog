@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhzz.jhzzblog.mapper.ArticleMapper">
+
+    <select id="newArticles" resultType="com.jhzz.jhzzblog.entity.Article" parameterType="int">
+        select id,title
+        from ms_article
+        order by create_date desc limit #{limit}
+    </select>
+
+    <select id="getHotArticles" resultType="com.jhzz.jhzzblog.entity.Article" parameterType="int">
+        select id,title
+        from ms_article
+        order by view_counts desc
+        limit #{limit}
+    </select>
+    <select id="listArticles" resultType="com.jhzz.jhzzblog.entity.dos.Archives">
+        select year(from_unixtime(create_date/1000)) as year,month(from_unixtime(create_date/1000)) as month,count(*) as count
+        from ms_article
+        group by year,month
+    </select>
+</mapper>
