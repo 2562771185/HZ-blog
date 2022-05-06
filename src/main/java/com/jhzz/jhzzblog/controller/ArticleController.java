@@ -1,14 +1,11 @@
 package com.jhzz.jhzzblog.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jhzz.jhzzblog.common.aop.LogAnnotation;
 import com.jhzz.jhzzblog.common.cache.Cache;
 import com.jhzz.jhzzblog.entity.Article;
 import com.jhzz.jhzzblog.entity.SysUser;
 import com.jhzz.jhzzblog.entity.dos.Archives;
-import com.jhzz.jhzzblog.mapper.ArticleMapper;
 import com.jhzz.jhzzblog.service.IArticleService;
 import com.jhzz.jhzzblog.service.ITagService;
 import com.jhzz.jhzzblog.service.SysUserService;
@@ -22,7 +19,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.management.relation.RelationNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,7 +65,7 @@ public class ArticleController {
      */
     @RequestMapping
     @LogAnnotation(module = "文章", operation = "获取文章列表")
-//    @Cache(expire = 5 * 60 * 1000, name = "listArticle")
+    @Cache(expire = 5 * 60 * 1000, name = "listArticle")
     public CommonResult getPage(@RequestBody PageParams pageParams) {
         return articleService.listArticle(pageParams);
     }

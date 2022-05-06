@@ -2,27 +2,29 @@ package com.jhzz.jhzzblog.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.jhzz.jhzzblog.entity.*;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.jhzz.jhzzblog.entity.Article;
+import com.jhzz.jhzzblog.entity.ArticleBody;
+import com.jhzz.jhzzblog.entity.ArticleTag;
+import com.jhzz.jhzzblog.entity.SysUser;
 import com.jhzz.jhzzblog.entity.dos.Archives;
 import com.jhzz.jhzzblog.mapper.ArticleBodyMapper;
 import com.jhzz.jhzzblog.mapper.ArticleMapper;
 import com.jhzz.jhzzblog.mapper.ArticleTagMapper;
 import com.jhzz.jhzzblog.service.*;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jhzz.jhzzblog.utils.UserThreadLocal;
 import com.jhzz.jhzzblog.vo.ArticleBodyVo;
 import com.jhzz.jhzzblog.vo.ArticleVo;
 import com.jhzz.jhzzblog.vo.TagVo;
 import com.jhzz.jhzzblog.vo.UserVo;
-import com.jhzz.jhzzblog.vo.commons.ArticleMessage;
 import com.jhzz.jhzzblog.vo.commons.CommonResult;
 import com.jhzz.jhzzblog.vo.param.ArticleParam;
 import com.jhzz.jhzzblog.vo.param.PageParams;
 import lombok.extern.slf4j.Slf4j;
-
 import org.joda.time.DateTime;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,12 +32,14 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
  * 服务实现类
  * </p>
- *dsadsa
+ * dsadsa
+ *
  * @author jhzz
  * @since 2022-04-24
  */
@@ -54,6 +58,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     private ICategoryService categoryService;
     @Resource
     private ArticleTagMapper articleTagMapper;
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
 //    @Resource
 //    private RocketMQTemplate rocketMQTemplate;
 
@@ -117,14 +123,14 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         /**
          * 如果传入了id 说明是更新文章
          */
-        if (articleParam.getId() != null){
+        if (articleParam.getId() != null) {
             article.setId(articleParam.getId());
             article.setSummary(articleParam.getSummary());
             article.setTitle(articleParam.getTitle());
             article.setCategoryId(articleParam.getCategory().getId());
             articleMapper.updateById(article);
             isEdit = true;
-        }else {
+        } else {
             article.setAuthorId(sysUser.getId());
             article.setWeight(Article.Article_Common);
             article.setViewCounts(0);
@@ -133,10 +139,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             article.setSummary(articleParam.getSummary());
             article.setCommentCounts(0);
             article.setCategoryId(articleParam.getCategory().getId());
-        //插入之后会生成一个文章id
-        articleMapper.insert(article);
+            //插入之后会生成一个文章id
+            articleMapper.insert(article);
         }
-
 
         //tag
         List<TagVo> tags = articleParam.getTags();
@@ -164,15 +169,22 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         //转成string防止精度丢失
         map.put("id", article.getId().toString());
         //如果是编辑文章后发布
-        if (isEdit){
-            //发一条消息给rocketmq 更新缓存
-            ArticleMessage articleMessage = new ArticleMessage();
-            articleMessage.setArticleId(article.getId());
-            //发送消息和数据
+//        if (isEdit){
+//            //发一条消息给rocketmq 更新缓存
+//            ArticleMessage articleMessage = new ArticleMessage();
+//            articleMessage.setArticleId(article.getId());
+        //发送消息和数据
 //            暂时不用缓存策略
 //            rocketMQTemplate.convertAndSend("blog-update-article",articleMessage);
 
-        }
+//        }
+        //更新缓存
+        log.info("发布了新文章，更新文章列表的缓存------");
+        Set<String> keys = stringRedisTemplate.keys("listArticle*");
+        assert keys != null;
+        keys.forEach(key -> {
+            stringRedisTemplate.delete(key);
+        });
         return CommonResult.success(map);
 
         //返回值的第二种方式
@@ -228,10 +240,10 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     public CommonResult searchArticle(String search) {
         LambdaQueryWrapper<Article> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.orderByDesc(Article::getViewCounts);
-        queryWrapper.select(Article::getId,Article::getTitle);
+        queryWrapper.select(Article::getId, Article::getTitle);
         queryWrapper.like(Article::getTitle, search);
         List<Article> articleList = articleMapper.selectList(queryWrapper);
-        return CommonResult.success(copyList(articleList,false,false));
+        return CommonResult.success(copyList(articleList, false, false));
     }
 
 

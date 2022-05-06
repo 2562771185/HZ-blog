@@ -29,7 +29,7 @@ public class WebMVCConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        log.info("拦截接口：-----------------------");
+        log.info("启动访问限制--------");
         //拦截test接口 后续实际遇到需要拦截的接口时 在配置真正的拦截接口
         registry.addInterceptor(loginInterceptor).addPathPatterns("/test")
                 .addPathPatterns("/jhzzblog/comments/create/change")

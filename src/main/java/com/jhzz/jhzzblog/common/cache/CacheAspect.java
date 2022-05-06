@@ -1,7 +1,6 @@
 package com.jhzz.jhzzblog.common.cache;
 
 import com.alibaba.fastjson.JSON;
-
 import com.jhzz.jhzzblog.vo.commons.CommonResult;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -12,9 +11,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.AliasFor;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
@@ -83,6 +80,7 @@ public class CacheAspect {
             log.info("存入缓存~~~ {},{}",className,methodName);
             return proceed;
         } catch (Throwable throwable) {
+            log.error("缓存模块出错了");
             throwable.printStackTrace();
         }
         return CommonResult.fail(-999,"系统错误");
