@@ -21,8 +21,8 @@ spring:
       # 上传文件总的最大值
       max-request-size: 20MB
 mybatis-plus:
-#  configuration:
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     db-config:
 #      数据库前缀

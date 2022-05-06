@@ -24,6 +24,7 @@ import java.util.UUID;
 public class UploadController {
     @Autowired
     private QiniuUtils qiniuUtils;
+
     @RequestMapping
     public CommonResult upload(@RequestParam("image") MultipartFile file){
         //获取文件原始名称：a.png a.txt
@@ -37,4 +38,6 @@ public class UploadController {
         }
         return CommonResult.fail(20001,"上传失败");
     }
+
+
 }

@@ -3,17 +3,19 @@ package com.jhzz.jhzzblog;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
-import com.jhzz.jhzzblog.entity.Article;
 import com.jhzz.jhzzblog.entity.SysUser;
 import com.jhzz.jhzzblog.service.IArticleService;
 import com.jhzz.jhzzblog.service.SysUserService;
 import com.jhzz.jhzzblog.utils.JWTUtils;
+import com.jhzz.jhzzblog.utils.QiniuUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.List;
+import java.util.Date;
 import java.util.Map;
 
 @SpringBootTest
@@ -55,5 +57,19 @@ class JhzzBlogApplicationTests {
     void selectTest1() {
         SysUser admin = sysUserService.findUserByAccount("admin");
         System.out.println("admin = " + admin);
+    }
+    @Autowired
+    private QiniuUtils qiniuUtils;
+    @Test
+    void qiniuDeleteTest() {
+//        qiniuUtils.deleteFile("d35b30f4-9a1d-4d91-a0af-a0ec95aba178.jpg");
+        Long time = 1651675367856L;
+        Date date = new Date(time);
+        DateFormat dateFormat = new SimpleDateFormat("M");
+        String format = dateFormat.format(date);
+
+//        2022-05-04
+        System.out.println(format);
+
     }
 }

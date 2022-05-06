@@ -12,8 +12,12 @@ import lombok.Data;
  */
 @Data
 public class PageParams {
-    private Integer page = 1;
-    private Integer size = 10;
+    private Integer page;
+    private Integer pageSize;
+    private Integer month;
+//    private Integer year;
+//    private String sort;
+//    private String name;
     private Long categoryId;
     private Long tagId ;
 }

@@ -29,10 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * <p>
@@ -195,7 +192,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Override
     public CommonResult listArticle(PageParams pageParams) {
-        Page<Article> page = new Page<>(pageParams.getPage(), pageParams.getSize());
+        Page<Article> page = new Page<>(pageParams.getPage(), pageParams.getPageSize());
         LambdaQueryWrapper<Article> wrapper = new LambdaQueryWrapper<>();
         //是否叫上分类id和标签id
         if (pageParams.getCategoryId() != null) {
