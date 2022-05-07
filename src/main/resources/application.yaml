@@ -1,5 +1,5 @@
 server:
-  port: 8888
+  port: 8778
   servlet:
     context-path: /api
 spring:
@@ -7,12 +7,12 @@ spring:
     name: jhzzBlog
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://localhost:3306/blog
+    url: jdbc:mysql://localhost/blog
     username: root
     password: 123456mjz...
     driver-class-name: com.mysql.cj.jdbc.Driver
   redis:
-    host: localhost
+    host: 121.43.101.99
     port: 6379
   servlet:
     multipart:

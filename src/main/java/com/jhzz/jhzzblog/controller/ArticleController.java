@@ -31,7 +31,7 @@ import java.util.List;
  * @since 2022-04-24
  */
 @RestController
-@RequestMapping("/jhzzblog/articles")
+@RequestMapping("articles")
 /**
  * 跨域
  */

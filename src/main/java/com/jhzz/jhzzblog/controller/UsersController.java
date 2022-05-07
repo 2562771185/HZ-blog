@@ -19,7 +19,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @CrossOrigin
-@RequestMapping("jhzzblog/users")
+@RequestMapping("users")
 public class UsersController {
     @Resource
     private SysUserService userService;

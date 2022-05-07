@@ -24,7 +24,7 @@ public class WebMVCConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         //跨域配置 也可以在类上加注解@CrossOrigin
-        registry.addMapping("/**").allowedOrigins("http://localhost:8080");
+        registry.addMapping("/**").allowedOrigins("http://121.43.101.99:8777","http://localhost:8777","http://121.43.101.99","http://jhzzmw.top/","http://jhzzmw.top:8777");
     }
 
     @Override

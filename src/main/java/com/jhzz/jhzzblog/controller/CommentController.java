@@ -3,7 +3,6 @@ package com.jhzz.jhzzblog.controller;
 import com.jhzz.jhzzblog.service.CommentService;
 import com.jhzz.jhzzblog.vo.commons.CommonResult;
 import com.jhzz.jhzzblog.vo.param.CommentParam;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +19,7 @@ import javax.annotation.Resource;
  * \
  */
 @RestController
-@RequestMapping("/jhzzblog/comments")
+@RequestMapping("comments")
 public class CommentController {
     @Resource
     private CommentService commentService;

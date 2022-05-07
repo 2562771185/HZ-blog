@@ -16,7 +16,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @CrossOrigin
-@RequestMapping("/jhzzblog")
+@RequestMapping
 public class LogoutController {
     @Resource
     private LoginService loginService;

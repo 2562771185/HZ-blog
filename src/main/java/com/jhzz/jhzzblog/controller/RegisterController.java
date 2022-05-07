@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @CrossOrigin
-@RequestMapping("jhzzblog")
+@RequestMapping
 public class RegisterController {
     @Autowired
     private LoginService loginService;

@@ -1,12 +1,10 @@
 package com.jhzz.jhzzblog.controller;
 
-import com.jhzz.jhzzblog.mapper.CategoryMapper;
 import com.jhzz.jhzzblog.service.ICategoryService;
 import com.jhzz.jhzzblog.vo.CategoryVo;
 import com.jhzz.jhzzblog.vo.commons.CommonResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -20,7 +18,7 @@ import javax.annotation.Resource;
  * @since 2022-04-26
  */
 @RestController
-@RequestMapping("jhzzblog/categorys")
+@RequestMapping("categorys")
 public class CategoryController {
     @Resource
     private ICategoryService categoryService;

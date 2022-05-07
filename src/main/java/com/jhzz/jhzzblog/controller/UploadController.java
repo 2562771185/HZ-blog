@@ -20,7 +20,7 @@ import java.util.UUID;
  * \
  */
 @RestController
-@RequestMapping("jhzzblog/upload")
+@RequestMapping("upload")
 public class UploadController {
     @Autowired
     private QiniuUtils qiniuUtils;
