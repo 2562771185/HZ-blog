@@ -9,10 +9,10 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     url: jdbc:mysql://localhost/blog
     username: root
-    password: 123456mjz...
+    password: 数据库密码
     driver-class-name: com.mysql.cj.jdbc.Driver
   redis:
-    host: 121.43.101.99
+    host: redis服务ip
     port: 6379
   servlet:
     multipart:
