@@ -26,14 +26,14 @@ import org.springframework.web.multipart.MultipartFile;
 @Component
 @Slf4j
 public class QiniuUtils {
-    public static  final String url = "http://razk1ycbm.hn-bkt.clouddn.com/";
+    public static  final String url = "http://xxxx.hn-bkt.xxxx.com/";
 
     @Value("${qiniu.accessKey}")
     private  String accessKey;
     @Value("${qiniu.accessSecretKey}")
     private  String accessSecretKey;
 
-    String bucket = "jhzzblog";
+    String bucket = "xxx";
 
     public  boolean upload(MultipartFile file, String fileName){
 
