@@ -83,12 +83,9 @@ public class ArticleController {
     //    http://localhost:8888/jhzzblog/articles/new
     //最新文章 接口
     @RequestMapping("/new")
+    @LogAnnotation(module = "最新文章", operation = "获取最新文章列表")
     public CommonResult newArticle() {
-        //方法一：自己写sql
-//        int limit = 5;
-//        List<Article> articles = articleService.newArticles(limit);
-//        return CommonResult.success(copyList(articles, false, false));
-        // 方法2：mybatis plus
+
         int limit = 5;
         LambdaQueryWrapper<Article> wrapper = new LambdaQueryWrapper<>();
         //按照时间降序

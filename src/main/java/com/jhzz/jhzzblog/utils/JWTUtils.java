@@ -21,10 +21,13 @@ public class JWTUtils {
         HashMap<String, Object> map = new HashMap<>();
         map.put("userId",userId);
         JwtBuilder jwtBuilder = Jwts.builder()
-                .signWith(SignatureAlgorithm.HS256,jwtToken) //签发算法 秘钥为jwtToken
-                .setClaims(map)//body数据 唯一 自行设置
+                //签发算法 秘钥为jwtToken
+                .signWith(SignatureAlgorithm.HS256,jwtToken)
+                //body数据 唯一 自行设置
+                .setClaims(map)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis()+60*60*60*24*1000));//设置一天有效时间
+                //设置一天有效时间
+                .setExpiration(new Date(System.currentTimeMillis()+60*60*60*24*1000));
         String token = jwtBuilder.compact();
         return token;
     }

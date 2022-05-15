@@ -6,10 +6,8 @@ import com.jhzz.jhzzblog.service.LoginService;
 import com.jhzz.jhzzblog.utils.UserThreadLocal;
 import com.jhzz.jhzzblog.vo.commons.CommonResult;
 import com.jhzz.jhzzblog.vo.commons.ErrorCode;
-import io.netty.channel.local.LocalEventLoopGroup;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -33,7 +31,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     private LoginService loginService;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        /**
+        /*
          * 在执行controller方法（handler）之前执行
          * 1、需要判断请求的接口路径是否为 HandlerMethod（controller方法）
          * 2、判断token 是否为空 空---》未登录
@@ -70,7 +68,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         //验证成功 放行
 
         //希望在controller中直接获取用户信息
-//        如何获取？
+//        如何获取？ redis
         //放入线程
         UserThreadLocal.put(sysUser);
         return true;

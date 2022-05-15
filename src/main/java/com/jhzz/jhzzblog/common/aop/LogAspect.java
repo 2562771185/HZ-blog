@@ -26,6 +26,7 @@ import java.lang.reflect.Method;
 /**
  * 日志切面
  *
+ * @author Huanzhi
  */
 @Aspect //切面 定义了通知和切点的关系
 @Component

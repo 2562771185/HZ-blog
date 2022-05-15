@@ -1,14 +1,13 @@
 package com.jhzz.jhzzblog.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jhzz.jhzzblog.entity.Article;
 import com.jhzz.jhzzblog.entity.Comment;
 import com.jhzz.jhzzblog.entity.SysUser;
 import com.jhzz.jhzzblog.mapper.ArticleMapper;
-import com.jhzz.jhzzblog.service.CommentService;
 import com.jhzz.jhzzblog.mapper.CommentMapper;
+import com.jhzz.jhzzblog.service.CommentService;
 import com.jhzz.jhzzblog.service.SysUserService;
 import com.jhzz.jhzzblog.utils.UserThreadLocal;
 import com.jhzz.jhzzblog.vo.CommentVo;
@@ -16,7 +15,7 @@ import com.jhzz.jhzzblog.vo.UserVo;
 import com.jhzz.jhzzblog.vo.commons.CommonResult;
 import com.jhzz.jhzzblog.vo.param.CommentParam;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -37,6 +36,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
     private SysUserService sysUserService;
     @Resource
     private ArticleMapper articleMapper;
+    @Resource
+    private RedisTemplate redisTemplate;
     @Override
     public CommonResult commentsByArticleId(Long articleId) {
         /**
@@ -47,6 +48,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
          */
         LambdaQueryWrapper<Comment> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Comment::getArticleId, articleId);
+        wrapper.orderByDesc(Comment::getCreateDate);
         wrapper.eq(Comment::getLevel, 1);
         List<Comment> comments = commentMapper.selectList(wrapper);
         List<CommentVo> commentVoList = copyList(comments);
@@ -61,9 +63,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
      */
     @Override
     public CommonResult comment(CommentParam commentParam) {
-//        获取已登录的用户
+//        获取已登录的用户 redis中获取
         SysUser sysUser = UserThreadLocal.get();
-
+//      redisTemplate.opsForValue().get("login-"+)
         Comment comment = new Comment();
         //article_id超出范围？？？
         comment.setArticleId(commentParam.getArticleId());

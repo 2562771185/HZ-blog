@@ -1,6 +1,7 @@
 package com.jhzz.jhzzblog.utils;
 
 import com.jhzz.jhzzblog.entity.SysUser;
+import org.springframework.stereotype.Component;
 
 /**
  * \* Created with IntelliJ IDEA.
@@ -10,6 +11,7 @@ import com.jhzz.jhzzblog.entity.SysUser;
  * \* Description:
  * \
  */
+@Component
 public class UserThreadLocal {
     private UserThreadLocal() {
     }

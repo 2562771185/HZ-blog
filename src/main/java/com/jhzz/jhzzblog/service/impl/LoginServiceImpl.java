@@ -8,14 +8,13 @@ import com.jhzz.jhzzblog.utils.JWTUtils;
 import com.jhzz.jhzzblog.vo.commons.CommonResult;
 import com.jhzz.jhzzblog.vo.commons.ErrorCode;
 import com.jhzz.jhzzblog.vo.param.LoginParam;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import javax.annotation.Resource;
 import java.util.Map;
@@ -31,6 +30,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 @Transactional
+@Slf4j
 public class LoginServiceImpl implements LoginService {
 
     @Resource
@@ -43,13 +43,14 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public CommonResult login(LoginParam loginParam) {
-        /**
+        /*
          * 1、检查参数是否合法
          * 2、根据用户名和密码查询表
          * 3、如果不存在，登录失败
          * 4、如果用户存在。使用jwt生成token 返回给前端
          * 5、token放入redis  token：user信息，设置过期时间
          * （先认证token字符串是否合法。再确认redis认证是否存在）
+         * 将登录用户信息存入redis
          */
         String account = loginParam.getAccount();
         String password = loginParam.getPassword();
@@ -57,10 +58,10 @@ public class LoginServiceImpl implements LoginService {
         if (StringUtils.isBlank(account) || StringUtils.isBlank(password)) {
             return CommonResult.fail(ErrorCode.PARAMS_ERROR.getCode(), "login: " + ErrorCode.PARAMS_ERROR.getMsg());
         }
-        System.out.println("加密之前的密码----- " + password);
+//        System.out.println("加密之前的密码----- " + password);
         //加密密码
         password = DigestUtils.md5Hex(password + slat);
-        System.out.println("加密之后的密码----- " + password);
+//        System.out.println("加密之后的密码----- " + password);
         //因为数据库中是加密之后的密码 所以要传入加密之后的密码查询
         SysUser sysUser = userService.findUser(account, password);
         if (sysUser == null) {
@@ -70,7 +71,10 @@ public class LoginServiceImpl implements LoginService {
         String token = JWTUtils.createToken(sysUser.getId());
         //将token放入redis中缓存 并设置过期时间为1天
         redisTemplate.opsForValue().set("TOKEN_" + token, JSON.toJSONString(sysUser), 1, TimeUnit.DAYS);
-        System.out.println("sysUser = " + sysUser);
+//        redisTemplate.opsForValue().set("login-" + sysUser.getId(), JSON.toJSONString(sysUser.getId()), 1, TimeUnit.DAYS);
+        //放入redis
+//        UserThreadLocal.put(sysUser);
+//        log.info("存入redis:{}", sysUser.getId());
         return CommonResult.success(token);
     }
 
